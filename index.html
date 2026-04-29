@@ -3,116 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>퍼스널 게임 진단</title>
-    <style>
-        /* CSS: 디자인 영역 */
-        body {
-            background-color: #f0f0f0;
-            font-family: 'sans-serif';
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        #game-container {
-            background-color: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-        }
-
-        h1 {
-            font-size: 20px;
-            color: #333;
-            margin-bottom: 30px;
-            min-height: 50px;
-        }
-
-        button {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 10px;
-            border: 2px solid #4CAF50;
-            background-color: white;
-            color: #4CAF50;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-            button:hover {
-                background-color: #4CAF50;
-                color: white;
-            }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="game-container">
-        <h1 id="question-text">질문이 여기에 표시됩니다.</h1>
+        <h1 id="question-text">질문 로딩 중...</h1>
         <div id="choices-container"></div>
     </div>
 
-    <script>
-        // JavaScript: 플로우차트 로직 영역
-        const storyData = {
-            "start": {
-                text: "당신은 숲 속에서 길을 잃었습니다. 눈앞에 두 갈래 길이 있습니다.",
-                choices: [
-                    { answer: "빛이 들어오는 왼쪽 길로 간다", next: "q1" },
-                    { answer: "물소리가 들리는 오른쪽 길로 간다", next: "q2" }
-                ]
-            },
-            "q1": {
-                text: "낡은 보물상자를 발견했습니다. 열어보시겠습니까?",
-                choices: [
-                    { answer: "당연히 열어본다", next: "result_adventurer" },
-                    { answer: "함정일지 모르니 그냥 지나친다", next: "result_cautious" }
-                ]
-            },
-            "q2": {
-                text: "맑은 호숫가에 도착했습니다. 무언가 반짝입니다.",
-                choices: [
-                    { answer: "가까이 다가가서 줍는다", next: "result_adventurer" },
-                    { answer: "위험할 수 있으니 멀리서 지켜본다", next: "result_cautious" }
-                ]
-            },
-            "result_adventurer": {
-                text: "🎉 당신은 호기심 많고 행동력이 강한 '모험가' 성향입니다!",
-                choices: [{ answer: "처음부터 다시하기", next: "start" }]
-            },
-            "result_cautious": {
-                text: "🧐 당신은 신중하고 관찰력이 뛰어난 '전략가' 성향입니다!",
-                choices: [{ answer: "처음부터 다시하기", next: "start" }]
-            }
-        };
-
-        function renderStory(nodeId) {
-            const currentStory = storyData[nodeId];
-            document.getElementById('question-text').innerText = currentStory.text;
-
-            const choicesContainer = document.getElementById('choices-container');
-            choicesContainer.innerHTML = "";
-
-            currentStory.choices.forEach(choice => {
-                const button = document.createElement('button');
-                button.innerText = choice.answer;
-
-                // 버튼 클릭 시 다음 상황으로 넘어가도록 연결
-                button.onclick = () => renderStory(choice.next);
-
-                choicesContainer.appendChild(button);
-            });
-        }
-
-        // 게임 첫 시작점 실행
-        renderStory("start");
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
