@@ -1,63 +1,113 @@
-﻿/* 전체 배경 설정: 화면 중앙 정렬 */
+﻿:root {
+    --mint: #1dd1a1; /* 산뜻하고 귀여운 파스텔 민트 */
+    --mint-hover: #10ac84; /* 버튼을 눌렀을 때 톤다운된 안정적인 민트 */
+    --bg-color: #f0fdfa; /* 아주 밝고 화사한 우유빛 민트 배경 */
+    --text-color: #3d3d3d; /* 가독성을 위한 부드러운 다크 그레이 */
+    --box-bg: rgba(255, 255, 255, 0.85); /* 뽀샤시하게 배경이 살짝 비치는 하얀 창 */
+}
+
 body {
-    background-color: #f8f9fa;
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    background-color: var(--bg-color);
+    font-family: 'Pretendard', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    overflow: hidden;
+    color: var(--text-color);
 }
 
-/* 진단창 박스 디자인 */
+/* --- 💡 고정 배경 캐릭터 (화사한 느낌으로 변경) --- */
+.bg-character {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('hannia.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    /* 밝은 배경에 맞게 투명도를 살짝 올림 */
+    opacity: 0.15;
+    /* 캐릭터 주변에 뽀얀 흰색/민트색 광채 */
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+    z-index: -2;
+}
+
+
+
+/* --- 진단창 디자인 (동글동글하고 뽀얀 느낌) --- */
 #game-container {
-    background-color: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    background-color: var(--box-bg);
+    padding: 40px 30px;
+    border-radius: 40px; /* 더 동글동글하게 */
+    border: 3px solid #ffffff; /* 하얀색 굵은 테두리로 귀여움 강조 */
+    box-shadow: 0 15px 35px rgba(29, 209, 161, 0.15); /* 부드러운 민트 그림자 */
+    backdrop-filter: blur(10px);
     text-align: center;
-    max-width: 450px;
-    width: 90%; /* 모바일 대응용 */
+    max-width: 400px;
+    width: 85%;
+    z-index: 10;
 }
 
-/* 질문 텍스트 스타일 */
 #question-text {
-    font-size: 22px;
-    color: #2d3436;
-    margin-bottom: 40px;
-    line-height: 1.4;
-    word-break: keep-all; /* 단어가 잘리지 않게 설정 */
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 35px;
+    word-break: keep-all;
+    color: var(--text-color);
 }
 
-/* 선택지 버튼 디자인 */
 #choices-container {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
 }
 
+/* --- 아기자기한 젤리 같은 버튼 --- */
 button {
-    padding: 18px 25px;
-    border: 2px solid #00d2d3;
-    background-color: white;
-    color: #00d2d3;
+    padding: 18px 20px;
+    background-color: #ffffff; /* 기본은 깔끔한 하얀 버튼 */
+    border: 2px solid var(--mint);
+    color: var(--mint);
     font-size: 16px;
-    font-weight: 600;
-    border-radius: 12px;
+    font-weight: 700;
+    border-radius: 50px;
     cursor: pointer;
-    transition: all 0.25s ease;
+    /* 통통 튀는 애니메이션 유지 */
+    transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* 살짝 떠 있는 느낌의 기본 그림자 */
     outline: none;
 }
 
-    /* 마우스를 올렸을 때(Hover) 효과 */
     button:hover {
-        background-color: #00d2d3;
-        color: white;
-        transform: translateY(-2px); /* 살짝 떠오르는 효과 */
-        box-shadow: 0 5px 15px rgba(0, 210, 211, 0.3);
+        background-color: var(--mint);
+        color: #ffffff; /* 마우스 올리면 글씨가 하얗게 변함 */
+        border-color: var(--mint);
+        transform: translateY(-5px) scale(1.03); /* 위로 살짝 통통 튀어오름 */
+        box-shadow: 0 10px 20px rgba(29, 209, 161, 0.3); /* 그림자가 진해짐 */
     }
 
-    /* 버튼 클릭 시 눌리는 효과 */
     button:active {
-        transform: translateY(0);
+        transform: translateY(0) scale(0.98); /* 누르면 쏙 들어가는 느낌 */
+        box-shadow: 0 2px 5px rgba(29, 209, 161, 0.2);
     }
+.animate-slide-side {
+    /* 0.7초 동안 부드럽게 스르륵 밀려오는 애니메이션 */
+    animation: slideSideFade 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes slideSideFade {
+    0% {
+        opacity: 0;
+        transform: translateX(150px); /* 오른쪽에서 크게(150px) 밀려 들어옴 */
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0); /* 원래 위치로 안착 */
+    }
+}
