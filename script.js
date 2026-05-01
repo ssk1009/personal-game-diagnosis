@@ -207,7 +207,7 @@ function showResult() {
         {
             id: "romance", img: "game9.png", emoji: "💌", name: "감성 로맨서", hash: "#로맨스형 #감정몰입 #미연시",
             desc: "게임 속 캐릭터와의 감정선·연애 요소에 진심으로 몰입하는 타입. 심장 두근거리는 게 취미.",
-            games: "러브딜리버리, 러브앤딥스페이스, 아이돌리쉬세븐",
+            games: "러브딜리버리, 러브앤딥스페이스, 사니양 연구실, 아이돌리쉬세븐",
             score: (tags.romance * 12) + (tags.character * 6) + (tags.cinematic * 4) - (tags.action * 5) - (tags.competitive * 5)
         }
     ];
