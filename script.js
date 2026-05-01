@@ -81,7 +81,7 @@ const questions = [
 
 let currentQuestionIndex = 0;
 
-// 3. 💡 [수정됨] 시작 화면을 보여주는 함수 (게임 사진 콜라주 추가)
+// 3. 시작 화면을 보여주는 함수
 function showStartScreen() {
     const container = document.getElementById('game-container');
     const questionText = document.getElementById('question-text');
@@ -90,16 +90,11 @@ function showStartScreen() {
     container.classList.remove('animate-slide-side');
     void container.offsetWidth;
 
-    // 💡 게임 사진들과 텍스트 꾸미기
+    // 💡 시작 화면 이미지도 png로 통일했습니다
     questionText.innerHTML = `
         <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;">
-            <!-- 첫 번째 게임 사진 (약간 왼쪽으로 기울임) -->
             <img src="game1.png" alt="게임1" style="width: 70px; height: 70px; border-radius: 20px; object-fit: cover; box-shadow: 0 8px 15px rgba(0,0,0,0.1); transform: rotate(-8deg); background-color: #ddd;">
-            
-            <!-- 두 번째 게임 사진 (살짝 위로 올라감) -->
             <img src="game2.png" alt="게임2" style="width: 70px; height: 70px; border-radius: 20px; object-fit: cover; box-shadow: 0 8px 15px rgba(0,0,0,0.1); transform: translateY(-10px); background-color: #eee;">
-            
-            <!-- 세 번째 게임 사진 (약간 오른쪽으로 기울임) -->
             <img src="game3.png" alt="게임3" style="width: 70px; height: 70px; border-radius: 20px; object-fit: cover; box-shadow: 0 8px 15px rgba(0,0,0,0.1); transform: rotate(8deg); background-color: #ccc;">
         </div>
         
@@ -158,60 +153,62 @@ function renderQuestion() {
 
 // 5. 결과 계산 및 화면 출력 로직
 function showResult() {
+    // 💡 [핵심 수정] 각 유형에 'img' 속성으로 대표 이미지를 지정해주었습니다.
+    // 💡 [핵심 수정] 등장 빈도가 적은 고유 태그의 점수를 대폭 높여 밸런스와 정확도를 맞춘 새로운 공식입니다!
     const resultScores = [
         {
-            id: "strategy", emoji: "♟️", name: "냉철한 전략가", hash: "#전략형 #경쟁형 #두뇌플레이",
+            id: "strategy", img: "game4.png", emoji: "♟️", name: "냉철한 전략가", hash: "#전략형 #경쟁형 #두뇌플레이",
             desc: "두뇌와 판단력으로 게임을 지배하는 타입. 메타 파악이 빠르고 승부욕이 강해요. 이기는 게 제일 재밌음.",
             games: "리그오브레전드, 롤토체스, 스타크래프트, 도타 2",
-            score: (tags.strategy * 3) + (tags.competitive * 3) + tags.action - (tags.romance * 4) - (tags.cinematic * 4) - (tags.chill * 2) - (tags.creative * 2)
+            score: (tags.strategy * 12) + (tags.competitive * 4) + (tags.action * 2) - (tags.chill * 5) - (tags.romance * 5)
         },
         {
-            id: "hardcore", emoji: "⚔️", name: "하드코어 파이터", hash: "#하드코어 #액션형 #도전형",
+            id: "hardcore", img: "game2.png", emoji: "⚔️", name: "하드코어 파이터", hash: "#하드코어 #액션형 #도전형",
             desc: "빡셀수록 불타오르는 진성 게이머. 배틀로얄·FPS·소울라이크가 딱이에요.",
             games: "배틀그라운드, 발로란트, 엘든링, 검은신화:오공, 로스트아크, 던전앤파이터",
-            score: (tags.action * 3) + (tags.hardcore * 3) + (tags.competitive * 2) - (tags.romance * 4) - (tags.cinematic * 4) - (tags.chill * 2)
+            score: (tags.hardcore * 12) + (tags.action * 3) + (tags.competitive * 2) - (tags.chill * 5) - (tags.casual * 5)
         },
         {
-            id: "explore", emoji: "🗺️", name: "자유로운 탐험가", hash: "#오픈월드 #탐험형 #장기플레이",
+            id: "explore", img: "game5.png", emoji: "🗺️", name: "자유로운 탐험가", hash: "#오픈월드 #탐험형 #장기플레이",
             desc: "넓은 오픈월드를 자유롭게 돌아다니며 발견의 기쁨을 즐기는 타입. 지도 구석구석 다 뒤지는 스타일.",
             games: "젤다의전설, 원신, 명조, 호그와트 레거시, 사이버펑크 2077, 연운, 파이널판타지 14",
-            score: (tags.explore * 3) + (tags.solo * 2) + tags.story - (tags.romance * 3) - (tags.cinematic * 2) - (tags.competitive * 2)
+            score: (tags.explore * 4) + (tags.creative * 8) + (tags.solo * 5) - (tags.competitive * 4) - (tags.action * 4)
         },
         {
-            id: "story", emoji: "🌙", name: "감성 스토리텔러", hash: "#스토리RPG #감성몰입 #서사형",
+            id: "story", img: "game6.png", emoji: "🌙", name: "감성 스토리텔러", hash: "#스토리RPG #감성몰입 #서사형",
             desc: "전투도 즐기면서 깊은 서사에 몰입하는 RPG 타입. 스킵 버튼은 없는 것과 같고, 엔딩에서 눈물 한 방울 각.",
             games: "페르소나 시리즈, NieR:오토마타, 붕괴:스타레일, 프래그마타, 용과같이 시리즈, 할로우나이트",
-            score: (tags.story * 3) + tags.action + tags.solo + tags.explore - (tags.romance * 3) - (tags.cinematic * 3) - (tags.competitive * 2)
+            score: (tags.story * 4) + (tags.companion * 8) + (tags.cinematic * 4) - (tags.action * 4) - (tags.multi * 5)
         },
         {
-            id: "cinematic", emoji: "🎬", name: "시네마틱 게이머", hash: "#시네마틱 #선택지형 #인터랙티브무비",
+            id: "cinematic", img: "game7.png", emoji: "🎬", name: "시네마틱 게이머", hash: "#시네마틱 #선택지형 #인터랙티브무비",
             desc: "선택지·연출 중심의 영화 같은 게임을 좋아하는 타입. 게임인지 영화인지 구분이 안 될 때 행복해요.",
             games: "디트로이트 비컴 휴먼, 더 라스트 오브 어스, 투 더 문, 헤비 레인, 성세천하",
-            score: (tags.cinematic * 5) + (tags.story * 3) + (tags.solo * 2) - (tags.action * 3) - (tags.competitive * 3) - (tags.romance * 3)
+            score: (tags.cinematic * 8) + (tags.story * 3) + (tags.solo * 5) - (tags.gameplay * 5) - (tags.action * 4)
         },
         {
-            id: "social", emoji: "🎉", name: "신나는 파티 소셜러", hash: "#멀티플레이 #파티게임 #사교형",
+            id: "social", img: "game8.png", emoji: "🎉", name: "신나는 파티 소셜러", hash: "#멀티플레이 #파티게임 #사교형",
             desc: "같이 웃고 떠드는 게 제일 재밌는 타입. 친구들이랑 같이 하는 게 열 배는 재밌어요.",
             games: "폴가이즈, 피코파크, 휴먼폴플랫, 어몽어스, 잇 테익스 투, 파티 애니멀즈",
-            score: (tags.multi * 5) + (tags.casual * 2) - (tags.solo * 4) - (tags.romance * 3) - (tags.cinematic * 3)
+            score: (tags.multi * 12) + (tags.casual * 8) + (tags.competitive * 3) - (tags.solo * 10) - (tags.hardcore * 5)
         },
         {
-            id: "chill", emoji: "🌿", name: "느긋한 힐링메이커", hash: "#힐링형 #생활시뮬 #느긋한플레이",
+            id: "chill", img: "game1.png", emoji: "🌿", name: "느긋한 힐링메이커", hash: "#힐링형 #생활시뮬 #느긋한플레이",
             desc: "나만의 공간을 꾸미고 느긋하게 일상을 즐기는 힐링형. 경쟁보다 나만의 페이스.",
             games: "스타듀밸리, 동물의숲, 마인크래프트, 포코피아, 심즈, 두근두근타운, 테라리아",
-            score: (tags.chill * 4) + (tags.creative * 3) + tags.solo - (tags.action * 4) - (tags.competitive * 4) - (tags.romance * 2)
+            score: (tags.chill * 12) + (tags.creative * 8) + (tags.explore * 3) - (tags.action * 5) - (tags.competitive * 5)
         },
         {
-            id: "collector", emoji: "✨", name: "열정적인 수집가", hash: "#수집형 #캐릭터덕후 #장기운영",
+            id: "collector", img: "game3.png", emoji: "✨", name: "열정적인 수집가", hash: "#수집형 #캐릭터덕후 #장기운영",
             desc: "좋아하는 캐릭터를 위해서라면 끝없이 파고드는 덕후형. 뽑기는 취미가 아니라 사명.",
             games: "블루 아카이브, 뱅드림, 프로젝트 세카이, 앙상블 스타즈, 우마무스메, 명일방주",
-            score: (tags.character * 3) + (tags.fantasy * 2) + tags.story - (tags.romance * 3) - (tags.action * 2) - (tags.competitive * 2)
+            score: (tags.character * 7) + (tags.fantasy * 8) + (tags.story * 3) - (tags.hardcore * 5) - (tags.realistic * 5)
         },
         {
-            id: "romance", emoji: "💌", name: "감성 로맨서", hash: "#로맨스형 #감정몰입 #미연시",
+            id: "romance", img: "game9.png", emoji: "💌", name: "감성 로맨서", hash: "#로맨스형 #감정몰입 #미연시",
             desc: "게임 속 캐릭터와의 감정선·연애 요소에 진심으로 몰입하는 타입. 심장 두근거리는 게 취미.",
             games: "러브딜리버리, 러브앤딥스페이스, 아이돌리쉬세븐",
-            score: (tags.romance * 6) + (tags.character * 2) + tags.story - (tags.action * 4) - (tags.competitive * 4) - (tags.multi * 3)
+            score: (tags.romance * 12) + (tags.character * 6) + (tags.cinematic * 4) - (tags.action * 5) - (tags.competitive * 5)
         }
     ];
 
@@ -221,11 +218,17 @@ function showResult() {
     const questionText = document.getElementById('question-text');
     const choicesContainer = document.getElementById('choices-container');
 
+    // 💡 결과 설명 윗부분에 이미지를 예쁘게 추가했습니다.
+    // 💡 [수정된 부분] height를 auto로 바꾸고 object-fit을 contain으로 변경했습니다.
     questionText.innerHTML = `
         <div style="font-size: 50px; margin-bottom: 10px;">${finalResult.emoji}</div>
         <h2 style="color: var(--mint); margin-top: 0; margin-bottom: 5px;">${finalResult.name}</h2>
-        <div style="font-size: 13px; color: #888; margin-bottom: 20px;">${finalResult.hash}</div>
-        <p style="font-size: 16px; line-height: 1.5; color: var(--text-color);">${finalResult.desc}</p>
+        <div style="font-size: 13px; color: #888; margin-bottom: 15px;">${finalResult.hash}</div>
+        
+        <!-- 💡 이미지가 짤리지 않도록 높이(height)를 auto로, 꽉 차지 않아도 다 보이게(contain) 설정 -->
+        <img src="${finalResult.img}" alt="추천 게임 이미지" style="width: 100%; height: auto; max-height: 250px; object-fit: contain; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); background-color: transparent;">
+        
+        <p style="font-size: 16px; line-height: 1.5; color: var(--text-color); margin-bottom: 0;">${finalResult.desc}</p>
         
         <div style="background: rgba(29, 209, 161, 0.1); border: 1px solid rgba(29, 209, 161, 0.3); padding: 15px; border-radius: 15px; margin-top: 25px; text-align: left;">
             <strong style="color: var(--mint-hover); display: block; margin-bottom: 5px;">🎮 추천 게임</strong>
